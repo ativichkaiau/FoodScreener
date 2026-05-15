@@ -1,8 +1,19 @@
 @import "tailwindcss";
 
+/* 🚀 1. THE ENGINE: Force Tailwind v4 to listen to the .dark class */
+@variant dark (&:where(.dark, .dark *));
+
+/* 🚀 2. THE VARIABLES: Define colors for both modes */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafafa;
+  --foreground: #111111;
+}
+
+/* This ensures that when the toggle adds the .dark class, 
+   the CSS variables flip along with the Tailwind classes */
+:where(.dark) {
+  --background: #050505;
+  --foreground: #fafafa;
 }
 
 @theme inline {
@@ -10,17 +21,36 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Add custom transition timing for the "Smooth" flow */
+  --transition-delay-theme: 700ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* 🚀 3. THE BODY: Cinematic Global Transitions */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  /* This creates the smooth fade for everything not covered by a Tailwind transition class */
+  transition: background-color 0.7s ease-in-out, color 0.7s ease-in-out, border-color 0.7s ease-in-out;
+  font-family: var(--font-sans), Arial, sans-serif;
+}
+
+/* 🚀 4. UTILITY: Custom Scrollbar to match SRMA aesthetic */
+@layer base {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-black/10 dark:bg-white/10 rounded-full;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Shimmer Animation for the ///RATION block */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
