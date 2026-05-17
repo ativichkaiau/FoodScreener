@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import ThemeToggle from '../components/ThemeToggle'; 
+import ThemeToggle from '../components/ThemeToggle';
+import { THEME_EVENT } from './theme';
 
 export default function RationTelemetryPage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -20,10 +21,21 @@ export default function RationTelemetryPage() {
   const [primaryTarget, setPrimaryTarget] = useState<any | null>(null);
   const [alternativeGroups, setAlternativeGroups] = useState<{ type: string; targets: any[] }[]>([]);
 
-  useEffect(() => { 
-    setIsMounted(true); 
-    const currentHour = new Date().getHours();
-    setCycleTime(currentHour < 6 || currentHour >= 18 ? 'NIGHT_CYCLE' : 'DAY_CYCLE');
+  useEffect(() => {
+    setIsMounted(true);
+    const sync = () =>
+      setCycleTime(
+        document.documentElement.classList.contains('dark')
+          ? 'NIGHT_CYCLE'
+          : 'DAY_CYCLE',
+      );
+    sync();
+    window.addEventListener(THEME_EVENT, sync);
+    const id = window.setInterval(sync, 30_000);
+    return () => {
+      window.removeEventListener(THEME_EVENT, sync);
+      window.clearInterval(id);
+    };
   }, []);
 
   if (!isMounted) return null;
@@ -119,24 +131,12 @@ export default function RationTelemetryPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAFA] dark:bg-[#050505] text-neutral-900 dark:text-neutral-100 relative overflow-hidden font-sans selection:bg-[#00A598]/30 transition-colors duration-700">
       
-      {/* CUSTOM ANIMATION STYLES */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes floatSlow {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-12px) rotate(-1deg); }
-        }
-        @keyframes floatFast {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-8px) rotate(2deg); }
-        }
-        .animate-float-slow { animation: floatSlow 6s ease-in-out infinite; }
-        .animate-float-fast { animation: floatFast 4s ease-in-out infinite; }
-      `}} />
-
       {/* DAY/NIGHT ATMOSPHERE */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden transition-opacity duration-1000">
-        <div className="absolute top-[-10%] right-[10%] w-[60%] h-[60%] bg-gradient-to-br from-blue-400/20 to-purple-400/20 dark:from-blue-600/15 dark:to-[#00A598]/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-70 dark:opacity-60 transition-all duration-1000"></div>
-        <div className="absolute bottom-[-10%] left-[5%] w-[50%] h-[50%] bg-gradient-to-tr from-pink-400/20 to-teal-300/20 dark:from-purple-600/10 dark:to-teal-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-70 dark:opacity-50 transition-all duration-1000"></div>
+        <div className="absolute top-[-10%] right-[10%] w-[60%] h-[60%] bg-gradient-to-br from-blue-400/20 to-purple-400/20 dark:from-blue-600/15 dark:to-[#00A598]/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-70 dark:opacity-60 transition-all duration-1000 animate-aurora"></div>
+        <div className="absolute bottom-[-10%] left-[5%] w-[50%] h-[50%] bg-gradient-to-tr from-pink-400/20 to-teal-300/20 dark:from-purple-600/10 dark:to-teal-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-70 dark:opacity-50 transition-all duration-1000 animate-aurora-rev"></div>
+        {/* NIGHT-ONLY STARFIELD */}
+        <div className="absolute inset-0 opacity-0 dark:opacity-100 transition-opacity duration-1000 animate-twinkle bg-[radial-gradient(1px_1px_at_20%_30%,rgba(255,255,255,0.7),transparent),radial-gradient(1px_1px_at_70%_20%,rgba(255,255,255,0.5),transparent),radial-gradient(1.5px_1.5px_at_45%_65%,rgba(255,255,255,0.6),transparent),radial-gradient(1px_1px_at_85%_75%,rgba(255,255,255,0.4),transparent),radial-gradient(1px_1px_at_15%_85%,rgba(255,255,255,0.5),transparent)]"></div>
       </div>
 
       {/* MINIMALIST HEADER */}
@@ -180,7 +180,7 @@ export default function RationTelemetryPage() {
 
             <h1 className="font-black tracking-tighter leading-none mb-4 flex flex-col items-center justify-center gap-2 sm:gap-3 xl:gap-4 relative z-10">
               <div className="flex items-center gap-3 text-[24px] sm:text-[32px] lg:text-[40px]">
-                <span className="italic text-white dark:text-black bg-neutral-900 dark:bg-white px-3 py-1.5 rounded-[12px] shadow-sm border border-black/5 dark:border-white/5 leading-none transition-colors duration-700">
+                <span className="shimmer-sweep relative overflow-hidden shrink-0 whitespace-nowrap italic text-white dark:text-black bg-neutral-900 dark:bg-white px-3 py-1.5 rounded-[12px] shadow-sm border border-black/5 dark:border-white/5 leading-none transition-colors duration-700">
                   ///RATION
                 </span>
                 <span className="text-transparent bg-clip-text bg-gradient-to-br from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-500 transition-colors duration-700">
@@ -190,7 +190,7 @@ export default function RationTelemetryPage() {
             </h1>
 
             <p className="max-w-2xl font-mono text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400 uppercase tracking-[0.3em] leading-relaxed px-4 relative z-10 transition-colors duration-700">
-              <span className="dark:hidden">DAY_CYCLE</span><span className="hidden dark:inline">NIGHT_CYCLE</span> // <span className="text-[#00A598] font-bold">RATION PROTOCOL ENGAGED</span>
+              <span className="tabular-nums">{cycleTime}</span> // <span className="text-[#00A598] font-bold">RATION PROTOCOL ENGAGED</span>
             </p>
           </section>
 
@@ -256,9 +256,22 @@ export default function RationTelemetryPage() {
                 <button
                   onClick={handleScan}
                   disabled={isScanning}
-                  className="flex-1 py-3.5 bg-[#00A598] hover:bg-[#009085] disabled:bg-neutral-200 dark:disabled:bg-white/5 disabled:text-neutral-400 dark:disabled:text-slate-500 disabled:cursor-not-allowed text-white text-sm font-bold rounded-xl transition-all shadow-[0_4px_15px_rgba(0,165,152,0.3)] dark:shadow-[0_0_15px_rgba(0,165,152,0.3)] disabled:shadow-none active:scale-95 flex items-center justify-center gap-2"
+                  className={`relative overflow-hidden flex-1 py-3.5 text-white text-sm font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                    isScanning
+                      ? 'bg-[#00A598] cursor-wait shadow-[0_0_25px_rgba(0,165,152,0.45)]'
+                      : 'bg-[#00A598] hover:bg-[#009085] shadow-[0_4px_15px_rgba(0,165,152,0.3)] dark:shadow-[0_0_15px_rgba(0,165,152,0.3)]'
+                  }`}
                 >
-                  {isScanning ? 'Querying Cloud Matrix...' : 'Execute Smart Scan'}
+                  {isScanning && <span className="scan-sweep" aria-hidden="true" />}
+                  {isScanning && (
+                    <span
+                      className="w-3.5 h-3.5 rounded-full border-2 border-white/40 border-t-white animate-spin"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="relative z-10">
+                    {isScanning ? 'Querying Cloud Matrix...' : 'Execute Smart Scan'}
+                  </span>
                 </button>
               </div>
             </div>
@@ -268,7 +281,7 @@ export default function RationTelemetryPage() {
               <div className="mt-8 pt-8 border-t border-black/5 dark:border-white/10 animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
                 
                 {/* Decision Banner */}
-                <div className={`flex flex-col items-center justify-center p-6 rounded-2xl border transition-colors ${
+                <div className={`banner-pop flex flex-col items-center justify-center p-6 rounded-2xl border transition-colors ${
                   decision === 'EXCLUDE' ? 'bg-red-50/80 dark:bg-red-950/30 border-red-200 dark:border-red-500/50 text-red-600 dark:text-red-500 shadow-[0_4px_20px_rgba(220,38,38,0.05)] dark:shadow-[0_0_20px_rgba(239,68,68,0.15)]' :
                   'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-500/50 text-emerald-600 dark:text-emerald-400 shadow-[0_4px_20px_rgba(16,185,129,0.05)] dark:shadow-[0_0_20px_rgba(16,185,129,0.15)]'
                 }`}>
@@ -321,7 +334,7 @@ export default function RationTelemetryPage() {
                      {/* Smart Isolation Cards (Primary Target) */}
                      {primaryTarget && !primaryTarget.error && (
                        <div className="flex flex-col gap-3 mb-4">
-                         <div className="p-5 rounded-xl border bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-500/20 transition-colors">
+                         <div className="animate-pulse-glow p-5 rounded-xl border bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-500/20 transition-colors">
                            <div className="text-[11px] font-bold mb-3 flex items-center justify-between">
                              <div className="flex items-center gap-2 text-[#00A598]">
                                🟩 PRIMARY EXTRACT: <span className="uppercase tracking-widest">{primaryTarget.type}</span>
@@ -363,7 +376,7 @@ export default function RationTelemetryPage() {
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   {group.targets.map((target, idx) => (
-                                    <div key={idx} onClick={() => handleSelectTarget(target)} className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-lg p-3 cursor-pointer hover:border-[#00A598]/50 transition-colors group">
+                                    <div key={idx} onClick={() => handleSelectTarget(target)} style={{ animationDelay: `${idx * 45}ms` }} className="rise-in bg-white dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-lg p-3 cursor-pointer hover:border-[#00A598]/50 hover:-translate-y-0.5 transition-all duration-200 group">
                                       <div className="flex justify-between items-start mb-1">
                                         <h4 className="font-bold text-[12px] text-neutral-800 dark:text-neutral-200 line-clamp-1">{target.name}</h4>
                                       </div>
