@@ -131,16 +131,22 @@ export default function RationTelemetryPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAFA] dark:bg-[#050505] text-neutral-900 dark:text-neutral-100 relative overflow-hidden font-sans selection:bg-[#00A598]/30 transition-colors duration-700">
       
-      {/* DAY/NIGHT ATMOSPHERE */}
+      {/* DAY/NIGHT ATMOSPHERE — richer 3-blob system */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden transition-opacity duration-1000">
-        <div className="absolute top-[-10%] right-[10%] w-[60%] h-[60%] bg-gradient-to-br from-blue-400/20 to-purple-400/20 dark:from-blue-600/15 dark:to-[#00A598]/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-70 dark:opacity-60 transition-all duration-1000 animate-aurora"></div>
-        <div className="absolute bottom-[-10%] left-[5%] w-[50%] h-[50%] bg-gradient-to-tr from-pink-400/20 to-teal-300/20 dark:from-purple-600/10 dark:to-teal-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-70 dark:opacity-50 transition-all duration-1000 animate-aurora-rev"></div>
+        {/* Blob 1 — top-right, cool blue → violet (day) / deep indigo → teal (night) */}
+        <div className="absolute top-[-12%] right-[8%] w-[62%] h-[62%] bg-gradient-to-br from-blue-400/25 via-violet-400/20 to-purple-400/25 dark:from-blue-700/20 dark:via-indigo-700/15 dark:to-[#00A598]/15 rounded-full blur-[130px] mix-blend-multiply dark:mix-blend-screen opacity-80 dark:opacity-70 transition-all duration-1000 animate-aurora"></div>
+        {/* Blob 2 — bottom-left, warm pink → teal (day) / plum → teal (night) */}
+        <div className="absolute bottom-[-12%] left-[2%] w-[55%] h-[55%] bg-gradient-to-tr from-pink-400/25 via-rose-300/15 to-teal-300/25 dark:from-purple-700/15 dark:via-fuchsia-700/10 dark:to-teal-600/15 rounded-full blur-[130px] mix-blend-multiply dark:mix-blend-screen opacity-80 dark:opacity-55 transition-all duration-1000 animate-aurora-rev"></div>
+        {/* Blob 3 — center-ish, warm amber → rose (day) / cyan → indigo (night) */}
+        <div className="absolute top-[28%] left-[28%] w-[44%] h-[44%] bg-gradient-to-br from-amber-300/20 via-orange-300/15 to-rose-300/20 dark:from-cyan-700/15 dark:via-sky-700/10 dark:to-indigo-700/15 rounded-full blur-[150px] mix-blend-multiply dark:mix-blend-screen opacity-65 dark:opacity-55 transition-all duration-1000 animate-aurora-slow"></div>
         {/* NIGHT-ONLY STARFIELD */}
-        <div className="absolute inset-0 opacity-0 dark:opacity-100 transition-opacity duration-1000 animate-twinkle bg-[radial-gradient(1px_1px_at_20%_30%,rgba(255,255,255,0.7),transparent),radial-gradient(1px_1px_at_70%_20%,rgba(255,255,255,0.5),transparent),radial-gradient(1.5px_1.5px_at_45%_65%,rgba(255,255,255,0.6),transparent),radial-gradient(1px_1px_at_85%_75%,rgba(255,255,255,0.4),transparent),radial-gradient(1px_1px_at_15%_85%,rgba(255,255,255,0.5),transparent)]"></div>
+        <div className="absolute inset-0 opacity-0 dark:opacity-100 transition-opacity duration-1000 animate-twinkle bg-[radial-gradient(1px_1px_at_20%_30%,rgba(255,255,255,0.7),transparent),radial-gradient(1px_1px_at_70%_20%,rgba(255,255,255,0.5),transparent),radial-gradient(1.5px_1.5px_at_45%_65%,rgba(255,255,255,0.6),transparent),radial-gradient(1px_1px_at_85%_75%,rgba(255,255,255,0.4),transparent),radial-gradient(1px_1px_at_15%_85%,rgba(255,255,255,0.5),transparent),radial-gradient(1px_1px_at_60%_50%,rgba(255,255,255,0.45),transparent),radial-gradient(1.5px_1.5px_at_30%_55%,rgba(255,255,255,0.5),transparent)]"></div>
+        {/* Soft vignette to pull focus to center */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(0,0,0,0.06)_100%)] dark:bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(0,0,0,0.4)_100%)] transition-opacity duration-1000"></div>
       </div>
 
       {/* MINIMALIST HEADER */}
-      <header className="h-[64px] lg:h-[72px] flex items-center justify-between px-4 lg:px-8 shrink-0 bg-white/60 dark:bg-black/40 backdrop-blur-2xl z-50 border-b border-black/5 dark:border-white/5 transition-colors duration-700">
+      <header className="glass-surface h-[64px] lg:h-[72px] flex items-center justify-between px-4 lg:px-8 shrink-0 bg-white/55 dark:bg-black/40 z-50 border-b border-white/40 dark:border-white/10 transition-colors duration-700">
         <div className="flex items-center gap-4 lg:gap-8">
           <Link href="/" className="font-black text-[18px] lg:text-[20px] tracking-tighter flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-7 h-7 bg-neutral-900 dark:bg-white text-white dark:text-black rounded-lg flex items-center justify-center text-[14px] transition-colors duration-700">V</div>
@@ -168,12 +174,12 @@ export default function RationTelemetryPage() {
           {/* HERO SECTION */}
           <section className="flex flex-col items-center justify-center text-center pt-8 sm:pt-10 pb-4 relative">
             
-            <div className="absolute left-[5%] top-2 hidden lg:flex items-center gap-2 bg-white/90 dark:bg-white/5 backdrop-blur-md px-4 py-2 rounded-full shadow-sm dark:shadow-none border border-black/5 dark:border-white/10 transition-colors duration-700 animate-float-slow">
+            <div className="glass-surface absolute left-[5%] top-2 hidden lg:flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-4 py-2 rounded-full border border-white/50 dark:border-white/10 transition-colors duration-700 animate-float-slow">
               <span className="text-sm">📍</span>
               <span className="text-[11px] font-bold tracking-tight text-neutral-700 dark:text-neutral-200">Grid Telemetry</span>
             </div>
 
-            <div className="absolute right-[5%] bottom-2 hidden lg:flex items-center gap-2 bg-white/90 dark:bg-white/5 backdrop-blur-md px-4 py-2 rounded-full shadow-sm dark:shadow-none border border-black/5 dark:border-white/10 transition-colors duration-700 animate-float-fast">
+            <div className="glass-surface absolute right-[5%] bottom-2 hidden lg:flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-4 py-2 rounded-full border border-white/50 dark:border-white/10 transition-colors duration-700 animate-float-fast">
               <span className="text-sm">⚡</span>
               <span className="text-[11px] font-bold tracking-tight text-[#00A598]">Engine Nominal</span>
             </div>
@@ -195,7 +201,7 @@ export default function RationTelemetryPage() {
           </section>
 
           {/* THE ENGINE (Bento Box Wrapper) */}
-          <div className="flex flex-col rounded-[24px] lg:rounded-[32px] bg-white/60 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/5 p-5 lg:p-8 shadow-[0_4px_30px_rgb(0,0,0,0.04)] transition-all duration-700">
+          <div className="glass-surface flex flex-col rounded-[24px] lg:rounded-[32px] bg-white/55 dark:bg-white/[0.04] border border-white/40 dark:border-white/10 p-5 lg:p-8 transition-all duration-700">
             
             {/* Header */}
             <div className="flex justify-between items-center mb-6 px-1">
@@ -281,7 +287,7 @@ export default function RationTelemetryPage() {
               <div className="mt-8 pt-8 border-t border-black/5 dark:border-white/10 animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
                 
                 {/* Decision Banner */}
-                <div className={`banner-pop flex flex-col items-center justify-center p-6 rounded-2xl border transition-colors ${
+                <div className={`glass-surface banner-pop flex flex-col items-center justify-center p-6 rounded-2xl border transition-colors ${
                   decision === 'EXCLUDE' ? 'bg-red-50/80 dark:bg-red-950/30 border-red-200 dark:border-red-500/50 text-red-600 dark:text-red-500 shadow-[0_4px_20px_rgba(220,38,38,0.05)] dark:shadow-[0_0_20px_rgba(239,68,68,0.15)]' :
                   'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-500/50 text-emerald-600 dark:text-emerald-400 shadow-[0_4px_20px_rgba(16,185,129,0.05)] dark:shadow-[0_0_20px_rgba(16,185,129,0.15)]'
                 }`}>
@@ -334,7 +340,7 @@ export default function RationTelemetryPage() {
                      {/* Smart Isolation Cards (Primary Target) */}
                      {primaryTarget && !primaryTarget.error && (
                        <div className="flex flex-col gap-3 mb-4">
-                         <div className="animate-pulse-glow p-5 rounded-xl border bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-500/20 transition-colors">
+                         <div className="glass-surface animate-pulse-glow p-5 rounded-xl border bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-200/70 dark:border-emerald-500/25 transition-colors">
                            <div className="text-[11px] font-bold mb-3 flex items-center justify-between">
                              <div className="flex items-center gap-2 text-[#00A598]">
                                🟩 PRIMARY EXTRACT: <span className="uppercase tracking-widest">{primaryTarget.type}</span>

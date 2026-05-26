@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import IntroScreen from "../components/IntroScreen";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
             __html: `(function(){try{var m=localStorage.getItem('theme-mode');if(m!=='day'&&m!=='night'&&m!=='auto')m='auto';var h=new Date().getHours();var dark=m==='night'||(m==='auto'&&(h>=18||h<6));var r=document.documentElement;r.classList.toggle('dark',dark);r.dataset.themeMode=m;}catch(e){}})();`,
           }}
         />
+        <IntroScreen />
         {children}
       </body>
     </html>
