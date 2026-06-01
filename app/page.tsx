@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '../components/ThemeToggle';
+import InfoCard from '../components/InfoCard';
 import { THEME_EVENT } from './theme';
 
 export default function RationTelemetryPage() {
@@ -172,33 +173,62 @@ export default function RationTelemetryPage() {
         <div className="max-w-[1000px] mx-auto space-y-6 lg:space-y-8">
           
           {/* HERO SECTION */}
-          <section className="flex flex-col items-center justify-center text-center pt-8 sm:pt-10 pb-4 relative">
-            
-            <div className="glass-surface absolute left-[5%] top-2 hidden lg:flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-4 py-2 rounded-full border border-white/50 dark:border-white/10 transition-colors duration-700 animate-float-slow">
-              <span className="text-sm">📍</span>
-              <span className="text-[11px] font-bold tracking-tight text-neutral-700 dark:text-neutral-200">Grid Telemetry</span>
+          <section className="flex flex-col items-center justify-center text-center pt-8 sm:pt-12 pb-2 relative z-10">
+
+            {/* Top pill badge */}
+            <div className="glass-surface inline-flex items-center gap-2.5 mb-6 px-4 py-1.5 rounded-full bg-white/65 dark:bg-white/[0.05] border border-white/55 dark:border-white/10 transition-colors duration-700">
+              <span className="relative flex w-1.5 h-1.5">
+                <span className="absolute inset-0 rounded-full bg-[#00A598] opacity-75 animate-ping"></span>
+                <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-[#00A598]"></span>
+              </span>
+              <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-neutral-700 dark:text-neutral-200">
+                Personal Sustenance Telemetry
+              </span>
             </div>
 
-            <div className="glass-surface absolute right-[5%] bottom-2 hidden lg:flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-4 py-2 rounded-full border border-white/50 dark:border-white/10 transition-colors duration-700 animate-float-fast">
-              <span className="text-sm">⚡</span>
-              <span className="text-[11px] font-bold tracking-tight text-[#00A598]">Engine Nominal</span>
-            </div>
-
-            <h1 className="font-black tracking-tighter leading-none mb-4 flex flex-col items-center justify-center gap-2 sm:gap-3 xl:gap-4 relative z-10">
-              <div className="flex items-center gap-3 text-[24px] sm:text-[32px] lg:text-[40px]">
-                <span className="shimmer-sweep relative overflow-hidden shrink-0 whitespace-nowrap italic text-white dark:text-black bg-neutral-900 dark:bg-white px-3 py-1.5 rounded-[12px] shadow-sm border border-black/5 dark:border-white/5 leading-none transition-colors duration-700">
-                  ///RATION
+            {/* Two-line headline */}
+            <h1 className="font-black tracking-tighter leading-[0.95] mb-5 text-[36px] sm:text-[52px] lg:text-[64px] relative z-10">
+              <span className="block text-neutral-900 dark:text-white transition-colors duration-700">
+                Where to eat,
+              </span>
+              <span className="block italic">
+                <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#0ec3b4] via-[#00A598] to-[#057f76]">
+                  decided
                 </span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-br from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-500 transition-colors duration-700">
-                  Screening Matrix
-                </span>
-              </div>
+                <span className="text-[#00A598] not-italic">.</span>
+              </span>
             </h1>
 
-            <p className="max-w-2xl font-mono text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400 uppercase tracking-[0.3em] leading-relaxed px-4 relative z-10 transition-colors duration-700">
-              <span className="tabular-nums">{cycleTime}</span> // <span className="text-[#00A598] font-bold">RATION PROTOCOL ENGAGED</span>
+            {/* Tagline */}
+            <p className="max-w-[640px] text-[14px] sm:text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400 mb-7 px-4 transition-colors duration-700">
+              A tactical food screening engine that sweeps 16 sectors of the Suan Dok grid in parallel, ranks live targets, and locks one as your primary extract — with rerolls when fate disagrees.
             </p>
+
+            {/* RATION pill + protocol line */}
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-2">
+              <span className="shimmer-sweep relative overflow-hidden shrink-0 whitespace-nowrap italic text-white dark:text-black bg-neutral-900 dark:bg-white px-3 py-1 rounded-[10px] shadow-sm border border-black/5 dark:border-white/5 text-[14px] sm:text-[15px] font-black leading-none transition-colors duration-700 tracking-wider">
+                RATION
+              </span>
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-neutral-500 dark:text-neutral-400 transition-colors duration-700">
+                <span className="tabular-nums">{cycleTime}</span>
+                <span className="opacity-50">{' · '}</span>
+                <span className="text-[#00A598] font-bold">PROTOCOL ENGAGED</span>
+              </span>
+            </div>
+
+            {/* Feature chip row (capabilities, not products — distinct from inspiration) */}
+            <div className="flex flex-wrap items-center justify-center gap-x-5 sm:gap-x-7 gap-y-2 mt-6 font-mono text-[9.5px] sm:text-[10px] uppercase tracking-[0.25em]">
+              {['Grid Telemetry', '16 Sectors', 'Live Places API', 'Smart Reroll'].map((label) => (
+                <span key={label} className="inline-flex items-center gap-2 text-neutral-600 dark:text-neutral-400 transition-colors duration-700">
+                  <span className="w-1 h-1 rounded-full bg-[#00A598]"></span>
+                  {label}
+                </span>
+              ))}
+            </div>
           </section>
+
+          {/* OPERATING BRIEF — info card shown on every tab */}
+          <InfoCard />
 
           {/* THE ENGINE (Bento Box Wrapper) */}
           <div className="glass-surface flex flex-col rounded-[24px] lg:rounded-[32px] bg-white/55 dark:bg-white/[0.04] border border-white/40 dark:border-white/10 p-5 lg:p-8 transition-all duration-700">
