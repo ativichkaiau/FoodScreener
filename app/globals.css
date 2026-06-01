@@ -207,7 +207,14 @@ body {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
-.intro-progress { animation: introProgress 2.2s cubic-bezier(0.5, 0, 0.2, 1) forwards; }
+.intro-progress { animation: introProgress 3.2s cubic-bezier(0.5, 0, 0.2, 1) forwards; }
+
+/* Boot log line — fade + slide in (driven by inline animation-delay) */
+@keyframes introLogLine {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.intro-log-line { animation: introLogLine 0.35s ease-out both; }
 
 @keyframes introDots {
   0%   { content: ""; }
@@ -244,226 +251,6 @@ body {
   );
 }
 
-/* Food Matrix intro sequence */
-.intro-sequence-card {
-  position: relative;
-}
-.intro-sequence-card::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  pointer-events: none;
-  border-radius: inherit;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.09), transparent 34%),
-    radial-gradient(90% 40% at 50% 0%, rgba(243, 191, 91, 0.11), transparent 65%);
-}
-.intro-map {
-  position: relative;
-  height: clamp(180px, 20vw, 210px);
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 48%, rgba(0, 165, 152, 0.08), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 42%);
-}
-.intro-map-grid {
-  position: absolute;
-  inset: 12%;
-  opacity: 0.55;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 25% 34%;
-  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
-}
-.intro-map-node {
-  position: absolute;
-  z-index: 4;
-  width: 58px;
-  height: 58px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  border: 2px solid rgba(243, 191, 91, 0.52);
-  background:
-    radial-gradient(circle at 50% 50%, rgba(243, 191, 91, 0.34) 0 24%, rgba(243, 191, 91, 0.12) 25% 100%),
-    rgba(20, 18, 12, 0.92);
-  box-shadow: 0 0 24px rgba(243, 191, 91, 0.16);
-}
-.intro-map-node span {
-  width: 26px;
-  height: 26px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  background: #f3bf5b;
-  color: #171109;
-  font-size: 14px;
-  font-weight: 950;
-}
-.intro-map-home {
-  left: 13%;
-  top: 46%;
-}
-.intro-map-scan {
-  left: calc(50% - 29px);
-  top: 43%;
-  border-color: rgba(255, 126, 83, 0.58);
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 112, 72, 0.34) 0 24%, rgba(255, 112, 72, 0.1) 25% 100%),
-    rgba(20, 12, 10, 0.9);
-  box-shadow: 0 0 34px rgba(255, 102, 64, 0.36);
-}
-.intro-map-scan span {
-  background: #ff744f;
-}
-.intro-map-target {
-  right: 13%;
-  top: 46%;
-}
-.intro-map-label {
-  position: absolute;
-  z-index: 5;
-  transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.46);
-  font-size: 12px;
-  font-weight: 950;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-.intro-label-home {
-  left: calc(13% + 29px);
-  top: 69%;
-}
-.intro-label-scan {
-  left: 50%;
-  top: 69%;
-}
-.intro-label-target {
-  left: calc(87% - 29px);
-  top: 69%;
-}
-.intro-map-badge {
-  position: absolute;
-  z-index: 7;
-  left: 50%;
-  bottom: 8%;
-  transform: translateX(-50%);
-  border: 1px solid rgba(0, 165, 152, 0.55);
-  border-radius: 999px;
-  background: rgba(2, 26, 25, 0.72);
-  color: rgba(232, 255, 252, 0.9);
-  padding: 8px 14px;
-  font-size: 11px;
-  font-weight: 950;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  box-shadow: 0 0 28px rgba(0, 165, 152, 0.16);
-}
-.intro-map-route {
-  position: absolute;
-  z-index: 2;
-  left: 17%;
-  top: 36%;
-  width: 66%;
-  height: 42%;
-  border-radius: 50%;
-  border-top: 5px solid rgba(255, 255, 255, 0.1);
-  transform: rotate(-5deg);
-}
-.intro-route-base {
-  border-top-color: rgba(255, 255, 255, 0.12);
-}
-.intro-route-active {
-  z-index: 3;
-  border-top-color: #f3bf5b;
-  filter: drop-shadow(0 0 12px rgba(243, 191, 91, 0.24));
-  clip-path: inset(0 67% 0 0);
-  transition: clip-path 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.45s ease;
-}
-.intro-route-dashed {
-  z-index: 3;
-  left: 50%;
-  top: 49%;
-  width: 28%;
-  height: 16%;
-  border-top: 4px dashed rgba(255, 126, 83, 0.72);
-  border-radius: 0 0 999px 999px;
-  transform: rotate(8deg);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-.intro-map-arrow {
-  position: absolute;
-  z-index: 6;
-  right: 18.4%;
-  top: 49%;
-  width: 0;
-  height: 0;
-  border-left: 28px solid #f3bf5b;
-  border-top: 17px solid transparent;
-  border-bottom: 17px solid transparent;
-  filter: drop-shadow(0 0 12px rgba(243, 191, 91, 0.28));
-  transform: rotate(-8deg);
-  opacity: 0.4;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-.intro-map-2 .intro-route-active {
-  clip-path: inset(0 35% 0 0);
-  border-top-color: rgba(243, 191, 91, 0.68);
-}
-.intro-map-2 .intro-route-dashed {
-  opacity: 1;
-}
-.intro-map-2 .intro-map-scan {
-  animation: pulseGlow 1.8s ease-in-out infinite;
-}
-.intro-map-3 .intro-route-active {
-  clip-path: inset(0 0 0 0);
-}
-.intro-map-3 .intro-route-dashed {
-  opacity: 1;
-}
-.intro-map-3 .intro-map-arrow {
-  opacity: 1;
-  transform: rotate(-8deg) translateX(4px);
-}
-.intro-map-3 .intro-map-target {
-  animation: pulseGlow 1.9s ease-in-out infinite;
-}
-
-@media (max-width: 520px) {
-  .intro-map {
-    height: 180px;
-  }
-  .intro-map-node {
-    width: 50px;
-    height: 50px;
-  }
-  .intro-map-node span {
-    width: 22px;
-    height: 22px;
-    font-size: 12px;
-  }
-  .intro-map-scan {
-    left: calc(50% - 25px);
-  }
-  .intro-map-label {
-    display: none;
-  }
-  .intro-map-badge {
-    bottom: 6%;
-    padding: 7px 12px;
-    font-size: 10px;
-  }
-  .intro-map-arrow {
-    right: 17%;
-    border-left-width: 22px;
-    border-top-width: 14px;
-    border-bottom-width: 14px;
-  }
-}
-
 /* Respect users who ask for less motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-float-slow,
@@ -481,12 +268,14 @@ body {
   .intro-pop,
   .intro-rise,
   .intro-progress,
-  .intro-dots::after {
+  .intro-dots::after,
+  .intro-log-line {
     animation: none !important;
   }
   .rise-in,
   .banner-pop,
   .intro-pop,
-  .intro-rise { opacity: 1 !important; transform: none !important; filter: none !important; }
+  .intro-rise,
+  .intro-log-line { opacity: 1 !important; transform: none !important; filter: none !important; }
   .intro-progress { transform: scaleX(1) !important; }
 }

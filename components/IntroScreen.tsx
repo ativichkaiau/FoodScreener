@@ -1,207 +1,194 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { THEME_EVENT } from '../app/theme';
 
-const FADE_MS = 520;
+// PRE-FLIGHT — single-screen cinematic boot sequence. Returns on every
+// reload (no localStorage skip). Auto-advances and dismisses so users
+// don't have to click through; Esc / Enter / Space / click anywhere
+// also skips. Echoes the hero's voice ("Where to eat, decided.") in the
+// main app's teal palette + glass aesthetic.
+
+const HOLD_MS = 3200; // visible duration before auto-exit
+const FADE_MS = 600; // fade-out duration
 
 type Phase = 'visible' | 'exiting' | 'gone';
 
-const introSteps = [
-  {
-    eyebrow: '01',
-    label: 'SCAN',
-    title: 'Open the Food Matrix',
-    copy: 'Start from Suan Dok Grid and watch the system map nearby food signals before any choice is made.',
-    badge: 'Radius sweep',
-  },
-  {
-    eyebrow: '02',
-    label: 'FILTER',
-    title: 'Tune hunger constraints',
-    copy: 'Distance, cost, and category weight the signal so the matrix ignores noise and keeps useful targets in range.',
-    badge: 'Cost gate',
-  },
-  {
-    eyebrow: '03',
-    label: 'SELECT',
-    title: 'Lock a ration target',
-    copy: 'The matrix isolates one primary option, keeps alternates ready, and lets you reroll the grid when the mission changes.',
-    badge: 'Target lock',
-  },
-] as const;
+const bootLog = [
+  { delay: 700, label: 'Establishing Suan Dok grid telemetry' },
+  { delay: 950, label: 'Calibrating 16-sector matrix sweep' },
+  { delay: 1200, label: 'Wiring Google Places live feed' },
+  { delay: 1450, label: 'Resolving day / night cycle' },
+  { delay: 1700, label: 'RATION protocol — engaged' },
+];
 
 export default function IntroScreen() {
-  const dialogRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<Phase>('visible');
-  const [step, setStep] = useState(0);
-
-  const current = introSteps[step];
-  const isLast = step === introSteps.length - 1;
-  const exiting = phase === 'exiting';
-
-  const diagramClass = useMemo(() => `intro-map intro-map-${step + 1}`, [step]);
+  const [cycle, setCycle] = useState('DAY_CYCLE');
 
   useEffect(() => {
-    dialogRef.current?.scrollTo(0, 0);
-  }, [step]);
+    const sync = () =>
+      setCycle(
+        document.documentElement.classList.contains('dark')
+          ? 'NIGHT_CYCLE'
+          : 'DAY_CYCLE',
+      );
+    sync();
+    window.addEventListener(THEME_EVENT, sync);
+    return () => window.removeEventListener(THEME_EVENT, sync);
+  }, []);
+
+  useEffect(() => {
+    if (phase !== 'visible') return;
+    const id = window.setTimeout(() => setPhase('exiting'), HOLD_MS);
+    return () => window.clearTimeout(id);
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== 'exiting') return;
-    const remove = window.setTimeout(() => setPhase('gone'), FADE_MS);
-    return () => window.clearTimeout(remove);
+    const id = window.setTimeout(() => setPhase('gone'), FADE_MS);
+    return () => window.clearTimeout(id);
   }, [phase]);
 
   useEffect(() => {
     if (phase !== 'visible') return;
-
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
         setPhase('exiting');
-        return;
-      }
-
-      if (event.key === 'Enter' || event.key === ' ') {
-        if (isLast) setPhase('exiting');
-        else setStep((value) => Math.min(value + 1, introSteps.length - 1));
-        return;
-      }
-
-      if (event.key === 'ArrowRight') {
-        setStep((value) => Math.min(value + 1, introSteps.length - 1));
-        return;
-      }
-
-      if (event.key === 'ArrowLeft') {
-        setStep((value) => Math.max(value - 1, 0));
       }
     };
-
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [isLast, phase]);
+  }, [phase]);
 
   if (phase === 'gone') return null;
+  const exiting = phase === 'exiting';
 
   return (
     <div
-      ref={dialogRef}
+      onClick={() => phase === 'visible' && setPhase('exiting')}
       role="dialog"
-      aria-label="Food Matrix introduction"
-      className={`fixed inset-0 z-[200] isolate overflow-hidden bg-[#080807] text-white transition-opacity duration-[520ms] ease-out ${
+      aria-label="RATION pre-flight"
+      className={`fixed inset-0 z-[200] isolate flex items-center justify-center cursor-pointer select-none bg-[#FAFAFA] dark:bg-[#050505] transition-opacity duration-[600ms] ease-out ${
         exiting ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:88px_88px] opacity-35" />
-        <div className="absolute -left-[18%] -top-[16%] h-[58%] w-[52%] rounded-full bg-[radial-gradient(circle,rgba(244,181,78,0.28),transparent_68%)] blur-[90px] animate-aurora" />
-        <div className="absolute -right-[12%] bottom-[-18%] h-[58%] w-[48%] rounded-full bg-[radial-gradient(circle,rgba(92,78,174,0.28),transparent_70%)] blur-[100px] animate-aurora-rev" />
-        <div className="absolute left-[36%] top-[26%] h-[44%] w-[34%] rounded-full bg-[radial-gradient(circle,rgba(0,165,152,0.18),transparent_68%)] blur-[110px] animate-aurora-slow" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,transparent_0%,rgba(0,0,0,0.28)_60%,rgba(0,0,0,0.72)_100%)]" />
+      {/* ATMOSPHERE — teal + indigo + amber whispers */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-[18%] right-[6%] h-[60%] w-[54%] rounded-full bg-gradient-to-br from-blue-400/25 via-violet-400/20 to-purple-400/25 dark:from-blue-700/22 dark:via-indigo-700/15 dark:to-[#00A598]/18 blur-[120px] mix-blend-multiply dark:mix-blend-screen animate-aurora" />
+        <div className="absolute -bottom-[18%] -left-[2%] h-[58%] w-[52%] rounded-full bg-gradient-to-tr from-pink-400/25 via-rose-300/15 to-teal-300/25 dark:from-purple-700/18 dark:via-fuchsia-700/12 dark:to-teal-600/18 blur-[130px] mix-blend-multiply dark:mix-blend-screen animate-aurora-rev" />
+        <div className="absolute top-[28%] left-[28%] h-[44%] w-[40%] rounded-full bg-gradient-to-br from-amber-300/20 via-orange-300/15 to-[#00A598]/25 dark:from-cyan-700/15 dark:via-sky-700/12 dark:to-indigo-700/15 blur-[150px] mix-blend-multiply dark:mix-blend-screen animate-aurora-slow" />
+        {/* faint grid */}
+        <div className="absolute inset-0 opacity-[0.07] dark:opacity-[0.04] bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.7)_1px,transparent_1px)] bg-[size:88px_88px]" />
+        {/* vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(0,0,0,0.10)_100%)] dark:bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.55)_100%)]" />
       </div>
 
+      {/* SKIP — top-right */}
       <button
         type="button"
-        onClick={() => setPhase('exiting')}
-        className="absolute right-5 top-5 z-20 rounded-full border border-white/12 bg-white/[0.035] px-5 py-2 text-[12px] font-black uppercase tracking-[0.18em] text-white/70 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl transition hover:border-[#F3BF5B]/45 hover:text-white focus:outline-none focus:ring-2 focus:ring-[#F3BF5B]/50 sm:right-8 sm:top-8"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (phase === 'visible') setPhase('exiting');
+        }}
+        className="glass-surface absolute top-5 right-5 sm:top-7 sm:right-7 z-20 px-4 py-1.5 rounded-full bg-white/60 dark:bg-white/[0.05] border border-white/55 dark:border-white/10 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-600 dark:text-neutral-300 hover:text-[#00A598] dark:hover:text-[#00A598] transition-colors"
       >
-        Skip Intro
+        Skip
       </button>
 
-      <div className="relative z-10 flex h-full items-center justify-center px-4 py-3 sm:px-6 lg:px-10">
-        <section className="intro-sequence-card w-full max-w-[860px] rounded-[26px] border border-white/12 bg-[#101414]/72 px-5 py-5 shadow-[0_30px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:px-7 sm:py-6 lg:px-8">
-          <div className="text-center">
-            <p className="mb-2 text-[11px] font-black uppercase tracking-[0.22em] text-[#F3BF5B]/82">
-              Food Matrix Orientation
-            </p>
-            <h1 className="text-[34px] font-black leading-[0.95] tracking-tight text-white sm:text-[46px] lg:text-[52px]">
-              Ration <span className="text-[#F3BF5B]">Targeting</span> Matrix
-            </h1>
-            <p className="mx-auto mt-2.5 max-w-[620px] text-[14px] font-semibold leading-relaxed text-white/62 sm:text-[15px]">
-              Scan the grid. Filter the signal. Pick the table.
-            </p>
-          </div>
-
-          <div className="mt-4 overflow-hidden rounded-[22px] border border-white/10 bg-[#071011]/68 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_18px_60px_rgba(0,0,0,0.35)] sm:mt-5">
-            <div className={diagramClass} aria-hidden="true">
-              <div className="intro-map-grid" />
-              <div className="intro-map-node intro-map-home">
-                <span>V</span>
-              </div>
-              <div className="intro-map-node intro-map-scan">
-                <span />
-              </div>
-              <div className="intro-map-node intro-map-target">
-                <span />
-              </div>
-              <div className="intro-map-route intro-route-base" />
-              <div className="intro-map-route intro-route-active" />
-              <div className="intro-map-route intro-route-dashed" />
-              <div className="intro-map-arrow" />
-              <div className="intro-map-label intro-label-home">Suan Dok</div>
-              <div className="intro-map-label intro-label-scan">Scan Ring</div>
-              <div className="intro-map-label intro-label-target">Food Target</div>
-              <div className="intro-map-badge">{current.badge}</div>
-            </div>
-          </div>
-
-          <div className="mt-5">
-            <div className="flex items-center gap-4 text-[#F3BF5B]">
-              <span className="font-mono text-[13px] font-black tracking-[0.18em]">{current.eyebrow}</span>
-              <span className="h-px w-9 bg-[#F3BF5B]/55" />
-              <span className="text-[13px] font-black uppercase tracking-[0.2em]">{current.label}</span>
-            </div>
-            <h2 className="mt-2 text-[23px] font-black tracking-tight text-white sm:text-[27px]">
-              {current.title}
-            </h2>
-            <p className="mt-1.5 max-w-[780px] text-[15px] font-semibold leading-relaxed text-white/64 sm:text-[16px]">
-              {current.copy}
-            </p>
-          </div>
-
-          <div className="mt-5 border-t border-white/10 pt-4">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-3">
-                {introSteps.map((item, index) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    onClick={() => setStep(index)}
-                    aria-label={`Go to intro step ${index + 1}`}
-                    className={`h-2.5 rounded-full transition-all duration-300 ${
-                      index === step
-                        ? 'w-14 bg-[#F3BF5B] shadow-[0_0_22px_rgba(243,191,91,0.6)]'
-                        : index < step
-                          ? 'w-9 bg-[#F3BF5B]/55'
-                          : 'w-9 bg-white/14 hover:bg-white/24'
-                    }`}
-                  />
-                ))}
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  disabled={step === 0}
-                  onClick={() => setStep((value) => Math.max(value - 1, 0))}
-                  className="min-w-[100px] rounded-full border border-white/12 bg-white/[0.025] px-6 py-3 text-[15px] font-black text-white/70 transition hover:border-white/24 hover:text-white disabled:pointer-events-none disabled:opacity-35 focus:outline-none focus:ring-2 focus:ring-white/20"
-                >
-                  Back
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (isLast) setPhase('exiting');
-                    else setStep((value) => Math.min(value + 1, introSteps.length - 1));
-                  }}
-                  className="min-w-[112px] rounded-full bg-[#F3BF5B] px-6 py-3 text-[15px] font-black text-[#161109] shadow-[0_15px_40px_rgba(243,191,91,0.28)] transition hover:bg-[#ffd37a] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#F3BF5B]/55"
-                >
-                  {isLast ? 'Begin' : 'Next'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+      {/* PRE-FLIGHT label — top-left */}
+      <div className="absolute top-5 left-5 sm:top-7 sm:left-7 z-20 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-500 dark:text-neutral-500">
+        <span className="relative flex w-1.5 h-1.5">
+          <span className="absolute inset-0 rounded-full bg-[#00A598] opacity-75 animate-ping"></span>
+          <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-[#00A598]"></span>
+        </span>
+        Pre-flight
       </div>
+
+      {/* CENTER CARD */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="glass-surface relative z-10 mx-5 w-full max-w-[640px] rounded-[28px] bg-white/55 dark:bg-white/[0.04] border border-white/45 dark:border-white/10 px-6 py-8 sm:px-10 sm:py-10"
+      >
+        {/* V logo */}
+        <div className="flex justify-center mb-5">
+          <div className="intro-pop w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-black flex items-center justify-center text-[26px] sm:text-[30px] font-black shadow-[0_10px_30px_rgba(0,0,0,0.18)] dark:shadow-[0_10px_40px_rgba(0,165,152,0.28)] transition-colors duration-700">
+            V
+          </div>
+        </div>
+
+        {/* Wordmark */}
+        <div
+          className="intro-rise flex items-baseline justify-center font-black tracking-tighter text-[26px] sm:text-[34px] leading-none mb-3"
+          style={{ animationDelay: '120ms' }}
+        >
+          <span className="text-neutral-900 dark:text-white transition-colors duration-700">VESTRIPPN</span>
+          <span className="text-blue-600 dark:text-blue-400 transition-colors duration-700">3.0</span>
+        </div>
+
+        {/* RATION pill + node meta */}
+        <div
+          className="intro-rise flex items-center justify-center gap-2.5 mb-6"
+          style={{ animationDelay: '240ms' }}
+        >
+          <span className="shimmer-sweep relative overflow-hidden shrink-0 whitespace-nowrap italic text-white dark:text-black bg-neutral-900 dark:bg-white px-2.5 py-1 rounded-[10px] shadow-sm border border-black/5 dark:border-white/5 text-[12px] sm:text-[13px] font-black leading-none tracking-wider transition-colors duration-700">
+            RATION
+          </span>
+          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-neutral-500 dark:text-neutral-400">
+            <span className="tabular-nums">{cycle}</span>
+            <span className="opacity-50">{' · '}</span>
+            <span className="text-[#00A598] font-bold">SUAN DOK NODE</span>
+          </span>
+        </div>
+
+        {/* Hero echo */}
+        <h2
+          className="intro-rise text-center font-black tracking-tighter leading-[0.95] text-[28px] sm:text-[36px] mb-7"
+          style={{ animationDelay: '360ms' }}
+        >
+          <span className="block text-neutral-900 dark:text-white transition-colors duration-700">Where to eat,</span>
+          <span className="block italic">
+            <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#0ec3b4] via-[#00A598] to-[#057f76]">
+              decided
+            </span>
+            <span className="text-[#00A598] not-italic">.</span>
+          </span>
+        </h2>
+
+        {/* Boot log */}
+        <ul className="space-y-1.5 mb-7 font-mono text-[11px] sm:text-[12px] text-neutral-600 dark:text-neutral-400 transition-colors duration-700">
+          {bootLog.map((line, i) => (
+            <li
+              key={line.label}
+              className="intro-log-line flex items-center gap-3"
+              style={{ animationDelay: `${line.delay}ms` }}
+            >
+              <span className="font-bold text-[#00A598]">[OK]</span>
+              <span className="flex-1">{line.label}</span>
+              <span className="font-bold text-[#00A598] tabular-nums">
+                {String(i + 1).padStart(2, '0')}/{String(bootLog.length).padStart(2, '0')}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        {/* Progress bar */}
+        <div className="h-[3px] rounded-full bg-black/10 dark:bg-white/10 overflow-hidden">
+          <div
+            className={`h-full bg-gradient-to-r from-[#0ec3b4] via-[#00A598] to-[#057f76] origin-left ${
+              exiting ? '' : 'intro-progress'
+            } shadow-[0_0_14px_rgba(0,165,152,0.65)]`}
+          />
+        </div>
+
+        {/* Tap hint */}
+        <p className="mt-5 text-center font-mono text-[9px] uppercase tracking-[0.4em] text-neutral-400 dark:text-neutral-600 animate-pulse">
+          Tap anywhere or press <span className="text-[#00A598] font-bold">↵</span> to engage
+        </p>
+      </div>
+
+      {/* Scanlines on top of card too */}
+      <div className="pointer-events-none absolute inset-0 intro-scanlines opacity-30 dark:opacity-20" />
     </div>
   );
 }
