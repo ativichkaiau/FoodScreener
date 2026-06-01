@@ -191,11 +191,11 @@ export default function RationTelemetryPage() {
               <span className="block text-neutral-900 dark:text-white transition-colors duration-700">
                 Where to eat,
               </span>
-              <span className="block italic">
+              <span className="block">
                 <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#0ec3b4] via-[#00A598] to-[#057f76]">
                   decided
                 </span>
-                <span className="text-[#00A598] not-italic">.</span>
+                <span className="text-[#00A598]">.</span>
               </span>
             </h1>
 
