@@ -209,6 +209,54 @@ body {
 }
 .intro-progress { animation: introProgress 3.2s cubic-bezier(0.5, 0, 0.2, 1) forwards; }
 
+/* Food screener intro board */
+.food-screen-grid {
+  background-image:
+    linear-gradient(rgba(102, 133, 138, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(102, 133, 138, 0.16) 1px, transparent 1px);
+  background-size: 25% 50%;
+}
+
+@keyframes foodScreenSweep {
+  0% { transform: translateX(-120%); opacity: 0; }
+  18% { opacity: 0.28; }
+  55% { opacity: 0.2; }
+  100% { transform: translateX(360%); opacity: 0; }
+}
+.food-screen-sweep {
+  background: linear-gradient(90deg, transparent, rgba(94, 234, 212, 0.18), transparent);
+  animation: foodScreenSweep 2.9s ease-in-out infinite;
+}
+
+@keyframes foodRouteDraw {
+  0% { stroke-dashoffset: 280; opacity: 0.35; }
+  45% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+.food-route-line {
+  stroke-dasharray: 280;
+  animation: foodRouteDraw 2.2s cubic-bezier(0.5, 0, 0.2, 1) infinite alternate;
+  filter: drop-shadow(0 0 8px rgba(94, 234, 212, 0.45));
+}
+
+.food-map-pin {
+  transform-origin: center;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+.food-map-pin::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 1px solid rgba(94, 234, 212, 0.32);
+  animation: foodPinPulse 2s ease-in-out infinite;
+}
+
+@keyframes foodPinPulse {
+  0%, 100% { transform: scale(0.8); opacity: 0.25; }
+  50% { transform: scale(1.28); opacity: 0; }
+}
+
 /* Boot log line — fade + slide in (driven by inline animation-delay) */
 @keyframes introLogLine {
   from { opacity: 0; transform: translateX(-8px); }
@@ -268,6 +316,9 @@ body {
   .intro-pop,
   .intro-rise,
   .intro-progress,
+  .food-screen-sweep,
+  .food-route-line,
+  .food-map-pin::after,
   .intro-dots::after,
   .intro-log-line {
     animation: none !important;
