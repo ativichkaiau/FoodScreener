@@ -28,7 +28,7 @@ export default function InfoCard() {
   return (
     <section
       aria-labelledby="operating-brief-heading"
-      className="glass-surface rounded-[20px] lg:rounded-[24px] bg-white/55 dark:bg-white/[0.04] border border-white/40 dark:border-white/10 p-5 lg:p-7 transition-all duration-700"
+      className="glass-surface rounded-[20px] lg:rounded-[24px] bg-white/55 dark:bg-white/[0.04] backdrop-blur-xl border border-white/40 dark:border-white/10 p-5 lg:p-7 transition-all duration-700"
     >
       {/* Header — metadata strip, not a hero */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-black/5 dark:border-white/10">

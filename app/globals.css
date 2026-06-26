@@ -154,15 +154,18 @@ body {
 .banner-pop { animation: bannerPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
 /* 🚀 6. GLASS SURFACE: layered glassmorphism (additive — pairs with
-   existing bg/border Tailwind classes; adds a top highlight + depth) */
+   existing bg/border Tailwind classes; adds a top highlight + depth).
+   NOTE: sets position: relative for the ::before to anchor — so if you
+   need a positioned variant (absolute/fixed), skip .glass-surface and
+   build the look from Tailwind utilities. The blur itself comes from
+   Tailwind's backdrop-blur utility on each consumer element (Lightning
+   CSS strips raw backdrop-filter declared here in dev). */
 .glass-surface {
   position: relative;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.6) inset,
     0 10px 40px -10px rgba(15, 23, 42, 0.08),
     0 4px 14px -4px rgba(15, 23, 42, 0.05);
-  backdrop-filter: blur(22px) saturate(140%);
-  -webkit-backdrop-filter: blur(22px) saturate(140%);
 }
 :where(.dark) .glass-surface {
   box-shadow:

@@ -147,7 +147,7 @@ export default function RationTelemetryPage() {
       </div>
 
       {/* MINIMALIST HEADER */}
-      <header className="glass-surface h-[64px] lg:h-[72px] flex items-center justify-between px-4 lg:px-8 shrink-0 bg-white/55 dark:bg-black/40 z-50 border-b border-white/40 dark:border-white/10 transition-colors duration-700">
+      <header className="glass-surface h-[64px] lg:h-[72px] flex items-center justify-between px-4 lg:px-8 shrink-0 bg-white/55 dark:bg-black/40 backdrop-blur-2xl z-50 border-b border-white/40 dark:border-white/10 transition-colors duration-700">
         <div className="flex items-center gap-4 lg:gap-8">
           <Link href="/" className="font-black text-[18px] lg:text-[20px] tracking-tighter flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-7 h-7 bg-neutral-900 dark:bg-white text-white dark:text-black rounded-lg flex items-center justify-center text-[14px] transition-colors duration-700">V</div>
@@ -176,7 +176,7 @@ export default function RationTelemetryPage() {
           <section className="flex flex-col items-center justify-center text-center pt-8 sm:pt-12 pb-2 relative z-10">
 
             {/* Top pill badge */}
-            <div className="glass-surface inline-flex items-center gap-2.5 mb-6 px-4 py-1.5 rounded-full bg-white/65 dark:bg-white/[0.05] border border-white/55 dark:border-white/10 transition-colors duration-700">
+            <div className="glass-surface inline-flex items-center gap-2.5 mb-6 px-4 py-1.5 rounded-full bg-white/65 dark:bg-white/[0.05] backdrop-blur-xl border border-white/55 dark:border-white/10 transition-colors duration-700">
               <span className="relative flex w-1.5 h-1.5">
                 <span className="absolute inset-0 rounded-full bg-[#00A598] opacity-75 animate-ping"></span>
                 <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-[#00A598]"></span>
@@ -231,7 +231,7 @@ export default function RationTelemetryPage() {
           <InfoCard />
 
           {/* THE ENGINE (Bento Box Wrapper) */}
-          <div className="glass-surface flex flex-col rounded-[24px] lg:rounded-[32px] bg-white/55 dark:bg-white/[0.04] border border-white/40 dark:border-white/10 p-5 lg:p-8 transition-all duration-700">
+          <div className="glass-surface flex flex-col rounded-[24px] lg:rounded-[32px] bg-white/55 dark:bg-white/[0.04] backdrop-blur-xl border border-white/40 dark:border-white/10 p-5 lg:p-8 transition-all duration-700">
             
             {/* Header */}
             <div className="flex justify-between items-center mb-6 px-1">
@@ -317,11 +317,11 @@ export default function RationTelemetryPage() {
               <div className="mt-8 pt-8 border-t border-black/5 dark:border-white/10 animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
                 
                 {/* Decision Banner */}
-                <div className={`glass-surface banner-pop flex flex-col items-center justify-center p-6 rounded-2xl border transition-colors ${
+                <div className={`glass-surface banner-pop flex flex-col items-center justify-center p-6 rounded-2xl backdrop-blur-xl border transition-colors ${
                   decision === 'EXCLUDE' ? 'bg-red-50/80 dark:bg-red-950/30 border-red-200 dark:border-red-500/50 text-red-600 dark:text-red-500 shadow-[0_4px_20px_rgba(220,38,38,0.05)] dark:shadow-[0_0_20px_rgba(239,68,68,0.15)]' :
                   'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-500/50 text-emerald-600 dark:text-emerald-400 shadow-[0_4px_20px_rgba(16,185,129,0.05)] dark:shadow-[0_0_20px_rgba(16,185,129,0.15)]'
                 }`}>
-                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight flex items-center gap-3">
+                  <h1 className="text-lg sm:text-2xl lg:text-3xl font-black tracking-tight flex items-center gap-2 sm:gap-3 text-center">
                     {decision === 'EXCLUDE' ? '🚩 EXCLUDE (Grid Empty)' : '🟩 TARGET ACQUIRED (Passes Screen)'}
                   </h1>
                 </div>
@@ -370,7 +370,7 @@ export default function RationTelemetryPage() {
                      {/* Smart Isolation Cards (Primary Target) */}
                      {primaryTarget && !primaryTarget.error && (
                        <div className="flex flex-col gap-3 mb-4">
-                         <div className="glass-surface animate-pulse-glow p-5 rounded-xl border bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-200/70 dark:border-emerald-500/25 transition-colors">
+                         <div className="glass-surface animate-pulse-glow p-5 rounded-xl border backdrop-blur-xl bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-200/70 dark:border-emerald-500/25 transition-colors">
                            <div className="text-[11px] font-bold mb-3 flex items-center justify-between">
                              <div className="flex items-center gap-2 text-[#00A598]">
                                🟩 PRIMARY EXTRACT: <span className="uppercase tracking-widest">{primaryTarget.type}</span>
