@@ -3,6 +3,112 @@
 import { useEffect, useState } from 'react';
 import { THEME_EVENT } from '../app/theme';
 
+// Hand-drawn-feel food map. A sketchy SVG (wobble via feTurbulence) with
+// a paper rectangle, three wavy roads, four dashed teal walking routes
+// radiating from the centre Suan Dok pin, and four colored food pins
+// (noodle bowl / coffee / rice / chili) with simple line icons. The
+// V-pin in the middle is rendered as a React overlay so the existing
+// theme tokens (bg-neutral-900 dark:bg-white) work cleanly.
+function HandDrawnFoodMap() {
+  return (
+    <div className="relative w-full max-w-[440px] mx-auto">
+      <svg
+        viewBox="0 0 440 220"
+        className="block w-full h-auto text-neutral-500 dark:text-neutral-500"
+        aria-hidden="true"
+      >
+        <defs>
+          <filter id="introMapSketch" x="-2%" y="-2%" width="104%" height="104%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.026" numOctaves="2" seed="4" />
+            <feDisplacementMap in="SourceGraphic" scale="2" />
+          </filter>
+        </defs>
+
+        {/* Paper border + wobbly roads */}
+        <g filter="url(#introMapSketch)" opacity="0.4">
+          <rect x="8" y="8" width="424" height="204" rx="14"
+            fill="none" stroke="currentColor" strokeWidth="1.5"
+            strokeDasharray="5 4" strokeLinecap="round" />
+          <path d="M 12 115 Q 120 108 220 100 T 428 118"
+            fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+          <path d="M 150 12 Q 160 70 150 110 T 165 208"
+            fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+          <path d="M 300 12 Q 290 75 305 110 T 290 208"
+            fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+        </g>
+
+        {/* Dashed teal walking routes — V to each food pin */}
+        <g filter="url(#introMapSketch)" stroke="#00A598" fill="none"
+          strokeWidth="1.6" strokeDasharray="3 4" strokeLinecap="round" opacity="0.85">
+          <path d="M 220 110 Q 160 80 95 55" />
+          <path d="M 220 110 Q 290 85 355 50" />
+          <path d="M 220 110 Q 300 145 365 185" />
+          <path d="M 220 110 Q 145 145 80 185" />
+        </g>
+
+        {/* Food pin: noodle bowl (top-left, amber) */}
+        <g transform="translate(95, 55)">
+          <circle r="15" fill="#F59E0B" />
+          <circle r="15" fill="none" stroke="white" strokeWidth="2" />
+          <line x1="-8" y1="-1" x2="8" y2="-1" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M -7 0 Q 0 7 7 0" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+          <line x1="3" y1="-8" x2="6" y2="-2" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
+          <line x1="5" y1="-8" x2="7" y2="-2" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
+        </g>
+
+        {/* Food pin: coffee cup (top-right, violet) */}
+        <g transform="translate(355, 50)">
+          <circle r="15" fill="#8B5CF6" />
+          <circle r="15" fill="none" stroke="white" strokeWidth="2" />
+          <path d="M -5 -4 L -5 4 Q -5 6 -3 6 L 3 6 Q 5 6 5 4 L 5 -4 Z"
+            fill="none" stroke="white" strokeWidth="1.8" strokeLinejoin="round" />
+          <path d="M 5 -2 Q 8 -2 8 1 Q 8 4 5 4" fill="none" stroke="white" strokeWidth="1.4" />
+          <path d="M -2 -8 Q -3 -10 -2 -12" fill="none" stroke="white" strokeWidth="1.4"
+            strokeLinecap="round" opacity="0.85" />
+          <path d="M 2 -8 Q 1 -10 2 -12" fill="none" stroke="white" strokeWidth="1.4"
+            strokeLinecap="round" opacity="0.85" />
+        </g>
+
+        {/* Food pin: rice bowl (bottom-right, emerald) */}
+        <g transform="translate(365, 185)">
+          <circle r="15" fill="#10B981" />
+          <circle r="15" fill="none" stroke="white" strokeWidth="2" />
+          <path d="M -8 0 L 8 0 Q 7 5 0 7 Q -7 5 -8 0 Z" fill="white" />
+          <circle cx="-3" cy="-3" r="1.2" fill="white" />
+          <circle cx="0" cy="-4" r="1.2" fill="white" />
+          <circle cx="3" cy="-3" r="1.2" fill="white" />
+        </g>
+
+        {/* Food pin: chili (bottom-left, red) */}
+        <g transform="translate(80, 185)">
+          <circle r="15" fill="#EF4444" />
+          <circle r="15" fill="none" stroke="white" strokeWidth="2" />
+          <path d="M -3 -5 Q 4 -2 4 4 Q 2 8 -2 8 Q -5 4 -3 -5 Z" fill="white" />
+          <path d="M -3 -5 Q -1 -8 2 -8" fill="none" stroke="white"
+            strokeWidth="1.5" strokeLinecap="round" />
+        </g>
+
+        {/* Compass N (top-right corner) */}
+        <g transform="translate(412, 28)" opacity="0.45">
+          <text x="0" y="0" textAnchor="middle" fontSize="9" fontWeight="700" fill="currentColor">N</text>
+          <path d="M 0 4 L 0 14 M -3 11 L 0 14 L 3 11"
+            stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+        </g>
+      </svg>
+
+      {/* V pin overlay at SVG centre — uses Tailwind for theme tokens */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center pointer-events-none">
+        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black flex items-center justify-center text-[20px] sm:text-[22px] font-black shadow-[0_8px_24px_rgba(0,0,0,0.22)] dark:shadow-[0_8px_28px_rgba(0,165,152,0.35)] transition-colors duration-700">
+          V
+        </div>
+        <div className="mt-1 font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] font-bold text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
+          Suan Dok
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // PRE-FLIGHT — single-screen cinematic boot sequence. Returns on every
 // reload (no localStorage skip). Auto-advances and dismisses so users
 // don't have to click through; Esc / Enter / Space / click anywhere
@@ -110,16 +216,14 @@ export default function IntroScreen() {
         onClick={(e) => e.stopPropagation()}
         className="glass-surface relative z-10 mx-5 w-full max-w-[640px] rounded-[28px] bg-white/55 dark:bg-white/[0.04] backdrop-blur-xl border border-white/45 dark:border-white/10 px-6 py-8 sm:px-10 sm:py-10"
       >
-        {/* V logo */}
-        <div className="flex justify-center mb-5">
-          <div className="intro-pop w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-black flex items-center justify-center text-[26px] sm:text-[30px] font-black shadow-[0_10px_30px_rgba(0,0,0,0.18)] dark:shadow-[0_10px_40px_rgba(0,165,152,0.28)] transition-colors duration-700">
-            V
-          </div>
+        {/* Hand-drawn food map (now also contains the V centre pin) */}
+        <div className="intro-pop mb-4 sm:mb-5">
+          <HandDrawnFoodMap />
         </div>
 
         {/* Wordmark */}
         <div
-          className="intro-rise flex items-baseline justify-center font-black tracking-tighter text-[26px] sm:text-[34px] leading-none mb-3"
+          className="intro-rise flex items-baseline justify-center font-black tracking-tighter text-[22px] sm:text-[28px] leading-none mb-3"
           style={{ animationDelay: '120ms' }}
         >
           <span className="text-neutral-900 dark:text-white transition-colors duration-700">VESTRIPPN</span>
@@ -143,16 +247,12 @@ export default function IntroScreen() {
 
         {/* Hero echo */}
         <h2
-          className="intro-rise text-center font-black tracking-tighter leading-[0.95] text-[28px] sm:text-[36px] mb-7"
+          className="intro-rise text-center font-black tracking-tighter leading-[0.95] text-[22px] sm:text-[28px] mb-5"
           style={{ animationDelay: '360ms' }}
         >
-          <span className="block text-neutral-900 dark:text-white transition-colors duration-700">Where to eat,</span>
-          <span className="block">
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#0ec3b4] via-[#00A598] to-[#057f76]">
-              decided
-            </span>
-            <span className="text-[#00A598]">.</span>
-          </span>
+          <span className="text-neutral-900 dark:text-white transition-colors duration-700">Where to eat, </span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#0ec3b4] via-[#00A598] to-[#057f76]">decided</span>
+          <span className="text-[#00A598]">.</span>
         </h2>
 
         {/* Boot log */}
