@@ -243,7 +243,7 @@ export default function RationTelemetryPage() {
 
             {/* Input Form (Replaces SRMA Textarea with styled slider container) */}
             <div className="space-y-4">
-              <div className="w-full p-6 sm:p-8 bg-white dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-2xl shadow-inner dark:shadow-none transition-colors flex flex-col justify-center min-h-[192px]">
+              <div className="clay-inset w-full p-6 sm:p-8 bg-white dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-2xl transition-colors flex flex-col justify-center min-h-[192px]">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 w-full">
                   
                   {/* Distance Slider */}
@@ -285,17 +285,17 @@ export default function RationTelemetryPage() {
               <div className="flex gap-4">
                 <button
                   onClick={handleClear}
-                  className="px-6 py-3.5 bg-white dark:bg-white/5 hover:bg-neutral-50 dark:hover:bg-white/10 text-neutral-600 dark:text-slate-300 text-sm font-bold rounded-xl transition-colors border border-black/10 dark:border-white/10 active:scale-95 shadow-sm dark:shadow-none"
+                  className="clay-button px-6 py-3.5 bg-white dark:bg-white/5 hover:bg-neutral-50 dark:hover:bg-white/10 text-neutral-600 dark:text-slate-300 text-sm font-bold rounded-xl border border-black/10 dark:border-white/10"
                 >
                   Clear Cache
                 </button>
                 <button
                   onClick={handleScan}
                   disabled={isScanning}
-                  className={`relative overflow-hidden flex-1 py-3.5 text-white text-sm font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                  className={`clay-button relative overflow-hidden flex-1 py-3.5 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 ${
                     isScanning
-                      ? 'bg-[#00A598] cursor-wait shadow-[0_0_25px_rgba(0,165,152,0.45)]'
-                      : 'bg-[#00A598] hover:bg-[#009085] shadow-[0_4px_15px_rgba(0,165,152,0.3)] dark:shadow-[0_0_15px_rgba(0,165,152,0.3)]'
+                      ? 'bg-[#00A598] cursor-wait'
+                      : 'bg-[#00A598] hover:bg-[#009085]'
                   }`}
                 >
                   {isScanning && <span className="scan-sweep" aria-hidden="true" />}
@@ -331,27 +331,27 @@ export default function RationTelemetryPage() {
                   
                   {/* LEFT COLUMN: Metrics & Overrides (Matches Keyword Panels) */}
                   <div className="md:col-span-1 space-y-4">
-                    <div className="p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl shadow-sm dark:shadow-none transition-colors">
+                    <div className="clay p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl transition-colors">
                       <h4 className="font-bold text-[13px] text-neutral-600 dark:text-emerald-400 mb-4 flex justify-between tracking-tight transition-colors">
                         Matrix Matches <span className="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded text-[11px] font-black">{allResults.length}</span>
                       </h4>
                       {allResults.length > 1 ? (
-                        <button onClick={() => triggerRoulette(allResults)} className="w-full py-3 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-500/20 text-[12px] font-bold uppercase tracking-widest rounded-lg transition-colors active:scale-95 flex items-center justify-center gap-2">
+                        <button onClick={() => triggerRoulette(allResults)} className="clay-button w-full py-3 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-500/20 text-[12px] font-bold uppercase tracking-widest rounded-lg flex items-center justify-center gap-2">
                           🎲 Reroll Target
                         </button>
                       ) : <p className="text-[12px] text-neutral-400 dark:text-slate-500 transition-colors">Insufficient data for reroll.</p>}
                     </div>
 
-                    <div className="p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl shadow-sm dark:shadow-none transition-colors">
+                    <div className="clay p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl transition-colors">
                       <h4 className="font-bold text-[13px] text-neutral-600 dark:text-blue-400 mb-4 tracking-tight transition-colors">
                         Active Parameters
                       </h4>
                       <div className="space-y-2">
-                         <div className="text-[11px] p-2 rounded border bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20 transition-colors">
+                         <div className="clay-inset text-[11px] p-2 rounded-lg border bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20 transition-colors">
                             <span className="font-bold uppercase text-blue-600 dark:text-blue-300">MAX RANGE:</span>
                             <span className="ml-2 font-black text-neutral-700 dark:text-neutral-200">{maxDistance} km</span>
                          </div>
-                         <div className="text-[11px] p-2 rounded border bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20 transition-colors">
+                         <div className="clay-inset text-[11px] p-2 rounded-lg border bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20 transition-colors">
                             <span className="font-bold uppercase text-blue-600 dark:text-blue-300">CAPITAL LIMIT:</span>
                             <span className="ml-2 font-black text-neutral-700 dark:text-neutral-200">{formatCost(maxCost)}</span>
                          </div>
@@ -360,7 +360,7 @@ export default function RationTelemetryPage() {
                   </div>
 
                   {/* RIGHT COLUMNS: Viewer & Context (Matches Context Viewer) */}
-                  <div className="md:col-span-2 p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl shadow-sm dark:shadow-none flex flex-col transition-colors">
+                  <div className="clay md:col-span-2 p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl flex flex-col transition-colors">
                      
                      <h4 className="font-bold text-[13px] text-neutral-600 dark:text-slate-300 mb-4 flex justify-between items-center tracking-tight transition-colors">
                        Target Isolation
@@ -392,7 +392,7 @@ export default function RationTelemetryPage() {
                               <span>{primaryTarget.location}</span>
                            </div>
 
-                           <a href={primaryTarget.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex text-[11px] font-bold text-white bg-[#00A598] px-4 py-2 rounded shadow-sm hover:bg-[#009085] transition-colors">
+                           <a href={primaryTarget.mapUrl} target="_blank" rel="noopener noreferrer" className="clay-button inline-flex text-[11px] font-bold text-white bg-[#00A598] px-4 py-2 rounded-lg hover:bg-[#009085]">
                              Launch Map Guidance ↗
                            </a>
                          </div>
@@ -402,7 +402,7 @@ export default function RationTelemetryPage() {
                      <h4 className="font-bold text-[13px] text-neutral-600 dark:text-slate-300 mb-3 mt-4 transition-colors">Secondary Vectors</h4>
                      
                      {/* Full Context Viewer (Replaced with Alternative Targets) */}
-                     <div className="bg-neutral-50/50 dark:bg-black/40 p-4 rounded-xl flex-1 overflow-y-auto border border-black/5 dark:border-black custom-scrollbar max-h-[300px] transition-colors">
+                     <div className="clay-inset bg-neutral-50/80 dark:bg-black/40 p-4 rounded-xl flex-1 overflow-y-auto border border-black/5 dark:border-black custom-scrollbar max-h-[300px] transition-colors">
                         {alternativeGroups.length > 0 ? (
                           <div className="space-y-4">
                             {alternativeGroups.map((group, gIdx) => (
@@ -412,7 +412,7 @@ export default function RationTelemetryPage() {
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   {group.targets.map((target, idx) => (
-                                    <div key={idx} onClick={() => handleSelectTarget(target)} style={{ animationDelay: `${idx * 45}ms` }} className="rise-in bg-white dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-lg p-3 cursor-pointer hover:border-[#00A598]/50 hover:-translate-y-0.5 transition-all duration-200 group">
+                                    <div key={idx} onClick={() => handleSelectTarget(target)} style={{ animationDelay: `${idx * 45}ms` }} className="clay rise-in bg-white dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-lg p-3 cursor-pointer hover:border-[#00A598]/50 hover:-translate-y-0.5 transition-all duration-200 group">
                                       <div className="flex justify-between items-start mb-1">
                                         <h4 className="font-bold text-[12px] text-neutral-800 dark:text-neutral-200 line-clamp-1">{target.name}</h4>
                                       </div>
