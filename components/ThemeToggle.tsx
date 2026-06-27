@@ -11,11 +11,13 @@ import {
   startAutoSync,
 } from '../app/theme';
 
-const MODES: { id: ThemeMode; label: string; icon: string }[] = [
-  { id: 'day', label: 'Day', icon: '☀️' },
-  { id: 'auto', label: 'Auto', icon: '◐' },
-  { id: 'night', label: 'Night', icon: '🌙' },
-];
+// Single-pill cycle toggle: Auto → Day → Night → Auto.
+const ORDER: readonly ThemeMode[] = ['auto', 'day', 'night'] as const;
+const META: Record<ThemeMode, { label: string; icon: string }> = {
+  auto: { label: 'Auto', icon: '◐' },
+  day: { label: 'Day', icon: '☀️' },
+  night: { label: 'Night', icon: '🌙' },
+};
 
 export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
@@ -36,7 +38,6 @@ export default function ThemeToggle() {
       setMode(m);
       setIsDark(document.documentElement.classList.contains('dark'));
     };
-    // Cross-tab sync: another tab changed the stored mode.
     const onStorage = (e: StorageEvent) => {
       if (e.key === THEME_STORAGE_KEY) {
         applyThemeMode(getStoredMode());
@@ -57,7 +58,8 @@ export default function ThemeToggle() {
     };
   }, []);
 
-  const selectMode = (next: ThemeMode) => {
+  const cycle = () => {
+    const next = ORDER[(ORDER.indexOf(modeRef.current) + 1) % ORDER.length];
     modeRef.current = next;
     setMode(next);
     setIsDark(applyThemeMode(next));
@@ -65,54 +67,44 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="h-9 w-[148px] rounded-full bg-white/50 dark:bg-white/5 border border-black/5 dark:border-white/10 opacity-50 cursor-wait" />
+      <div className="h-11 w-[96px] rounded-full bg-white/50 dark:bg-white/5 border border-black/5 dark:border-white/10 opacity-50 cursor-wait" />
     );
   }
 
+  const m = META[mode];
   const autoResolvedDark = resolveIsDark('auto');
+  const title =
+    mode === 'auto'
+      ? `Auto · follows local time (currently ${autoResolvedDark ? 'Night' : 'Day'}). Click to cycle to Day.`
+      : mode === 'day'
+        ? 'Day · click to cycle to Night'
+        : 'Night · click to cycle to Auto';
 
   return (
-    <div
-      className="group relative flex items-center gap-0.5 p-1 rounded-full bg-white/80 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-sm transition-colors duration-700"
-      role="radiogroup"
-      aria-label="Day / night mode"
+    <button
+      type="button"
+      onClick={cycle}
+      title={title}
+      aria-label={`Mode: ${m.label}. Click to cycle.`}
+      className="clay-button flex flex-col items-center justify-center px-5 py-1.5 rounded-full bg-white/80 dark:bg-white/[0.06] border border-white/55 dark:border-white/10 backdrop-blur-md font-sans focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00A598]/40"
     >
-      {MODES.map((m) => {
-        const active = mode === m.id;
-        return (
-          <button
-            key={m.id}
-            role="radio"
-            aria-checked={active}
-            onClick={() => selectMode(m.id)}
-            title={
-              m.id === 'auto'
-                ? `Auto · follows local time (currently ${autoResolvedDark ? 'Night' : 'Day'})`
-                : `Force ${m.label}`
-            }
-            className={`relative flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all duration-300 active:scale-95 focus:outline-none ${
-              active
-                ? 'bg-neutral-900 dark:bg-white text-white dark:text-black shadow-sm'
-                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-100'
-            }`}
-          >
-            <span
-              className={`text-[12px] leading-none transition-transform duration-500 ${
-                active ? 'scale-110' : 'opacity-70'
-              } ${m.id === 'auto' && active ? 'animate-spin-slow' : ''}`}
-            >
-              {m.icon}
-            </span>
-            <span className="hidden sm:inline leading-none">{m.label}</span>
-          </button>
-        );
-      })}
-
+      <span className="font-mono text-[8px] uppercase tracking-[0.28em] font-bold text-neutral-500 dark:text-neutral-400 leading-none mb-1">
+        Mode
+      </span>
+      <span className="flex items-center gap-1.5 text-[12px] font-bold text-neutral-900 dark:text-white leading-none">
+        <span>{m.label}</span>
+        <span
+          className={`text-[13px] leading-none ${mode === 'auto' ? 'animate-spin-slow inline-block' : ''}`}
+          aria-hidden="true"
+        >
+          {m.icon}
+        </span>
+      </span>
       <span className="sr-only" aria-live="polite">
         {mode === 'auto'
           ? `Auto mode, currently ${isDark ? 'night' : 'day'}`
           : `${isDark ? 'Night' : 'Day'} mode`}
       </span>
-    </div>
+    </button>
   );
 }

@@ -15,11 +15,11 @@ const FADE_MS = 600; // fade-out duration
 type Phase = 'visible' | 'exiting' | 'gone';
 
 const bootLog = [
-  { delay: 700, label: 'Establishing Suan Dok grid telemetry' },
-  { delay: 950, label: 'Calibrating 16-sector matrix sweep' },
-  { delay: 1200, label: 'Wiring Google Places live feed' },
-  { delay: 1450, label: 'Resolving day / night cycle' },
-  { delay: 1700, label: 'RATION protocol — engaged' },
+  { delay: 700, label: 'Mapping the Suan Dok kitchen perimeter' },
+  { delay: 950, label: 'Surveying 16 cuisine sectors in parallel' },
+  { delay: 1200, label: 'Tapping the live restaurant feed' },
+  { delay: 1450, label: 'Reading the day-vs-night meal rhythm' },
+  { delay: 1700, label: 'Ration locked — your fork is ready' },
 ];
 
 export default function IntroScreen() {

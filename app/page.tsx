@@ -172,58 +172,84 @@ export default function RationTelemetryPage() {
       <main className="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-5 lg:p-8 pb-32 lg:pb-8 relative z-10 transition-all duration-500">
         <div className="max-w-[1000px] mx-auto space-y-6 lg:space-y-8">
           
-          {/* HERO SECTION */}
-          <section className="flex flex-col items-center justify-center text-center pt-8 sm:pt-12 pb-2 relative z-10">
+          {/* HERO CARD — title + actions + 3-chip capability strip */}
+          <section className="clay relative z-10 rounded-[28px] lg:rounded-[32px] bg-white/55 dark:bg-white/[0.04] backdrop-blur-xl border border-white/40 dark:border-white/10 p-6 sm:p-8 lg:p-10 transition-all duration-700">
 
-            {/* Top pill badge */}
-            <div className="glass-surface inline-flex items-center gap-2.5 mb-6 px-4 py-1.5 rounded-full bg-white/65 dark:bg-white/[0.05] backdrop-blur-xl border border-white/55 dark:border-white/10 transition-colors duration-700">
+            {/* Top label */}
+            <div className="flex items-center gap-2 mb-5 sm:mb-6 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.3em] text-[#00A598] transition-colors duration-700">
               <span className="relative flex w-1.5 h-1.5">
                 <span className="absolute inset-0 rounded-full bg-[#00A598] opacity-75 animate-ping"></span>
                 <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-[#00A598]"></span>
               </span>
-              <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-neutral-700 dark:text-neutral-200">
-                Personal Sustenance Telemetry
-              </span>
+              <span>Food Matrix</span>
+              <span className="opacity-40">{' · '}</span>
+              <span className="text-neutral-500 dark:text-neutral-400 tabular-nums">{cycleTime}</span>
             </div>
 
-            {/* Two-line headline */}
-            <h1 className="font-black tracking-tighter leading-[0.95] mb-5 text-[36px] sm:text-[52px] lg:text-[64px] relative z-10">
-              <span className="block text-neutral-900 dark:text-white transition-colors duration-700">
-                Where to eat,
-              </span>
-              <span className="block">
-                <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#0ec3b4] via-[#00A598] to-[#057f76]">
-                  decided
-                </span>
-                <span className="text-[#00A598]">.</span>
-              </span>
-            </h1>
+            {/* Title + tagline (left) and action buttons (right) */}
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-10 mb-7">
+              <div className="flex-1 min-w-0">
+                <h1 className="font-black tracking-tighter leading-[0.95] text-[36px] sm:text-[48px] lg:text-[60px] mb-4 transition-colors duration-700">
+                  <span className="block text-neutral-900 dark:text-white">Where to eat,</span>
+                  <span className="block">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#0ec3b4] via-[#00A598] to-[#057f76]">decided</span>
+                    <span className="text-[#00A598]">.</span>
+                  </span>
+                </h1>
+                <p className="max-w-[560px] text-[14px] sm:text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400 transition-colors duration-700">
+                  A tactical food screening engine that sweeps 16 sectors of the Suan Dok grid in parallel, ranks live targets, and locks one as your primary extract — with rerolls when fate disagrees.
+                </p>
+              </div>
 
-            {/* Tagline */}
-            <p className="max-w-[640px] text-[14px] sm:text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400 mb-7 px-4 transition-colors duration-700">
-              A tactical food screening engine that sweeps 16 sectors of the Suan Dok grid in parallel, ranks live targets, and locks one as your primary extract — with rerolls when fate disagrees.
-            </p>
-
-            {/* RATION pill + protocol line */}
-            <div className="flex flex-wrap items-center justify-center gap-3 mb-2">
-              <span className="shimmer-sweep relative overflow-hidden shrink-0 whitespace-nowrap italic text-white dark:text-black bg-neutral-900 dark:bg-white px-3 py-1 rounded-[10px] shadow-sm border border-black/5 dark:border-white/5 text-[14px] sm:text-[15px] font-black leading-none transition-colors duration-700 tracking-wider">
-                RATION
-              </span>
-              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-neutral-500 dark:text-neutral-400 transition-colors duration-700">
-                <span className="tabular-nums">{cycleTime}</span>
-                <span className="opacity-50">{' · '}</span>
-                <span className="text-[#00A598] font-bold">PROTOCOL ENGAGED</span>
-              </span>
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:w-[210px] shrink-0">
+                <a
+                  href="#engine"
+                  className="clay-button flex-1 lg:w-full px-5 py-3 bg-[#00A598] hover:bg-[#009085] text-white text-[11px] sm:text-[12px] font-black uppercase tracking-[0.18em] rounded-xl flex items-center justify-center gap-2"
+                >
+                  Execute Scan
+                  <span aria-hidden="true">↓</span>
+                </a>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=18.789617,98.974003"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="clay-button flex-1 lg:w-full px-5 py-3 bg-white dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-200 text-[11px] sm:text-[12px] font-black uppercase tracking-[0.18em] rounded-xl border border-black/10 dark:border-white/10 flex items-center justify-center gap-2"
+                >
+                  Open Map
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
             </div>
 
-            {/* Feature chip row (capabilities, not products — distinct from inspiration) */}
-            <div className="flex flex-wrap items-center justify-center gap-x-5 sm:gap-x-7 gap-y-2 mt-6 font-mono text-[9.5px] sm:text-[10px] uppercase tracking-[0.25em]">
-              {['Grid Telemetry', '16 Sectors', 'Live Places API', 'Smart Reroll'].map((label) => (
-                <span key={label} className="inline-flex items-center gap-2 text-neutral-600 dark:text-neutral-400 transition-colors duration-700">
-                  <span className="w-1 h-1 rounded-full bg-[#00A598]"></span>
-                  {label}
-                </span>
-              ))}
+            {/* Divider */}
+            <div className="border-t border-black/5 dark:border-white/10 mb-6 transition-colors duration-700"></div>
+
+            {/* 3 colored capability chips */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+              <div className="clay rounded-2xl p-4 bg-emerald-50/85 dark:bg-emerald-500/10 border border-emerald-200/70 dark:border-emerald-500/20 transition-colors duration-700">
+                <div className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-emerald-700 dark:text-emerald-400 mb-2">
+                  Grid
+                </div>
+                <p className="text-[12px] leading-relaxed text-neutral-700 dark:text-neutral-300 transition-colors duration-700">
+                  16 sectors of the Suan Dok food grid swept in parallel via dual-fetch Google Places.
+                </p>
+              </div>
+              <div className="clay rounded-2xl p-4 bg-blue-50/85 dark:bg-blue-500/10 border border-blue-200/70 dark:border-blue-500/20 transition-colors duration-700">
+                <div className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-blue-700 dark:text-blue-400 mb-2">
+                  Engine
+                </div>
+                <p className="text-[12px] leading-relaxed text-neutral-700 dark:text-neutral-300 transition-colors duration-700">
+                  Wide radius + rank-by-distance fetch, deduped and rating-sorted before extract.
+                </p>
+              </div>
+              <div className="clay rounded-2xl p-4 bg-violet-50/85 dark:bg-violet-500/10 border border-violet-200/70 dark:border-violet-500/20 transition-colors duration-700">
+                <div className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-violet-700 dark:text-violet-400 mb-2">
+                  Output
+                </div>
+                <p className="text-[12px] leading-relaxed text-neutral-700 dark:text-neutral-300 transition-colors duration-700">
+                  One primary target + categorized alternates, with smart reroll and live map handoff.
+                </p>
+              </div>
             </div>
           </section>
 
@@ -231,7 +257,7 @@ export default function RationTelemetryPage() {
           <InfoCard />
 
           {/* THE ENGINE (Bento Box Wrapper) */}
-          <div className="glass-surface flex flex-col rounded-[24px] lg:rounded-[32px] bg-white/55 dark:bg-white/[0.04] backdrop-blur-xl border border-white/40 dark:border-white/10 p-5 lg:p-8 transition-all duration-700">
+          <div id="engine" className="glass-surface scroll-mt-24 flex flex-col rounded-[24px] lg:rounded-[32px] bg-white/55 dark:bg-white/[0.04] backdrop-blur-xl border border-white/40 dark:border-white/10 p-5 lg:p-8 transition-all duration-700">
             
             {/* Header */}
             <div className="flex justify-between items-center mb-6 px-1">
