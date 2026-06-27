@@ -150,7 +150,7 @@ export default function RationTelemetryPage() {
       <header className="glass-surface h-[64px] lg:h-[72px] flex items-center justify-between px-4 lg:px-8 shrink-0 bg-white/55 dark:bg-black/40 backdrop-blur-2xl z-50 border-b border-white/40 dark:border-white/10 transition-colors duration-700">
         <div className="flex items-center gap-4 lg:gap-8">
           <Link href="/" className="font-black text-[18px] lg:text-[20px] tracking-tighter flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="w-7 h-7 bg-neutral-900 dark:bg-white text-white dark:text-black rounded-lg flex items-center justify-center text-[14px] transition-colors duration-700">V</div>
+            <div className="clay w-7 h-7 bg-[#00A598] text-white rounded-lg flex items-center justify-center text-[14px] font-black transition-colors duration-700">V</div>
             <div className="flex items-baseline">
               <span>VESTRIPPN</span>
               <span className="text-blue-600 dark:text-blue-400 transition-colors duration-700">3.0</span>
