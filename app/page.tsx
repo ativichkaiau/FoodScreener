@@ -135,11 +135,11 @@ export default function RationTelemetryPage() {
       {/* DAY/NIGHT ATMOSPHERE — richer 3-blob system */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden transition-opacity duration-1000">
         {/* Blob 1 — top-right, cool blue → violet (day) / deep indigo → teal (night) */}
-        <div className="absolute top-[-12%] right-[8%] w-[62%] h-[62%] bg-gradient-to-br from-blue-400/25 via-violet-400/20 to-purple-400/25 dark:from-blue-700/20 dark:via-indigo-700/15 dark:to-[#00A598]/15 rounded-full blur-[130px] mix-blend-multiply dark:mix-blend-screen opacity-80 dark:opacity-70 transition-all duration-1000 animate-aurora"></div>
+        <div className="absolute top-[-12%] right-[8%] w-[62%] h-[62%] bg-gradient-to-br from-blue-400/40 via-violet-400/35 to-fuchsia-400/35 dark:from-blue-600/30 dark:via-indigo-600/22 dark:to-[#00A598]/22 rounded-full blur-[130px] mix-blend-multiply dark:mix-blend-screen opacity-90 dark:opacity-80 transition-all duration-1000 animate-aurora"></div>
         {/* Blob 2 — bottom-left, warm pink → teal (day) / plum → teal (night) */}
-        <div className="absolute bottom-[-12%] left-[2%] w-[55%] h-[55%] bg-gradient-to-tr from-pink-400/25 via-rose-300/15 to-teal-300/25 dark:from-purple-700/15 dark:via-fuchsia-700/10 dark:to-teal-600/15 rounded-full blur-[130px] mix-blend-multiply dark:mix-blend-screen opacity-80 dark:opacity-55 transition-all duration-1000 animate-aurora-rev"></div>
+        <div className="absolute bottom-[-12%] left-[2%] w-[55%] h-[55%] bg-gradient-to-tr from-pink-400/40 via-rose-300/28 to-teal-300/40 dark:from-fuchsia-600/25 dark:via-pink-600/18 dark:to-teal-500/25 rounded-full blur-[130px] mix-blend-multiply dark:mix-blend-screen opacity-90 dark:opacity-65 transition-all duration-1000 animate-aurora-rev"></div>
         {/* Blob 3 — center-ish, warm amber → rose (day) / cyan → indigo (night) */}
-        <div className="absolute top-[28%] left-[28%] w-[44%] h-[44%] bg-gradient-to-br from-amber-300/20 via-orange-300/15 to-rose-300/20 dark:from-cyan-700/15 dark:via-sky-700/10 dark:to-indigo-700/15 rounded-full blur-[150px] mix-blend-multiply dark:mix-blend-screen opacity-65 dark:opacity-55 transition-all duration-1000 animate-aurora-slow"></div>
+        <div className="absolute top-[28%] left-[28%] w-[44%] h-[44%] bg-gradient-to-br from-amber-300/35 via-orange-300/28 to-rose-300/32 dark:from-cyan-600/22 dark:via-sky-600/16 dark:to-indigo-600/22 rounded-full blur-[150px] mix-blend-multiply dark:mix-blend-screen opacity-80 dark:opacity-65 transition-all duration-1000 animate-aurora-slow"></div>
         {/* NIGHT-ONLY STARFIELD */}
         <div className="absolute inset-0 opacity-0 dark:opacity-100 transition-opacity duration-1000 animate-twinkle bg-[radial-gradient(1px_1px_at_20%_30%,rgba(255,255,255,0.7),transparent),radial-gradient(1px_1px_at_70%_20%,rgba(255,255,255,0.5),transparent),radial-gradient(1.5px_1.5px_at_45%_65%,rgba(255,255,255,0.6),transparent),radial-gradient(1px_1px_at_85%_75%,rgba(255,255,255,0.4),transparent),radial-gradient(1px_1px_at_15%_85%,rgba(255,255,255,0.5),transparent),radial-gradient(1px_1px_at_60%_50%,rgba(255,255,255,0.45),transparent),radial-gradient(1.5px_1.5px_at_30%_55%,rgba(255,255,255,0.5),transparent)]"></div>
         {/* Soft vignette to pull focus to center */}
@@ -150,7 +150,7 @@ export default function RationTelemetryPage() {
       <header className="glass-surface h-[64px] lg:h-[72px] flex items-center justify-between px-4 lg:px-8 shrink-0 bg-white/55 dark:bg-black/40 backdrop-blur-2xl z-50 border-b border-white/40 dark:border-white/10 transition-colors duration-700">
         <div className="flex items-center gap-4 lg:gap-8">
           <Link href="/" className="font-black text-[18px] lg:text-[20px] tracking-tighter flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="clay w-7 h-7 bg-[#00A598] text-white rounded-lg flex items-center justify-center text-[14px] font-black transition-colors duration-700">V</div>
+            <div className="clay w-7 h-7 bg-gradient-to-br from-[#0ec3b4] via-[#00A598] to-[#3b82f6] text-white rounded-lg flex items-center justify-center text-[14px] font-black transition-colors duration-700">V</div>
             <div className="flex items-baseline">
               <span>VESTRIPPN</span>
               <span className="text-blue-600 dark:text-blue-400 transition-colors duration-700">3.0</span>
@@ -166,6 +166,8 @@ export default function RationTelemetryPage() {
           
           <ThemeToggle />
         </div>
+        {/* Rainbow accent bar along the header's bottom edge */}
+        <div className="absolute inset-x-0 bottom-0 h-[3px] bg-[linear-gradient(90deg,#00A598,#22d3ee,#3b82f6,#a855f7,#ec4899,#f59e0b)] opacity-90"></div>
       </header>
 
       {/* MAIN WORKSPACE */}
@@ -226,25 +228,28 @@ export default function RationTelemetryPage() {
 
             {/* 3 colored capability chips */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-              <div className="clay rounded-2xl p-4 bg-emerald-50/85 dark:bg-emerald-500/10 border border-emerald-200/70 dark:border-emerald-500/20 transition-colors duration-700">
-                <div className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-emerald-700 dark:text-emerald-400 mb-2">
-                  Grid
+              <div className="clay rounded-2xl p-4 bg-gradient-to-br from-emerald-50 to-teal-100/80 dark:from-emerald-500/15 dark:to-teal-500/10 border border-emerald-200/70 dark:border-emerald-500/25 transition-colors duration-700">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="clay flex items-center justify-center w-6 h-6 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 text-white text-[12px] shrink-0">🗺️</span>
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-emerald-700 dark:text-emerald-400">Grid</span>
                 </div>
                 <p className="text-[12px] leading-relaxed text-neutral-700 dark:text-neutral-300 transition-colors duration-700">
                   16 sectors of the Suan Dok food grid swept in parallel via dual-fetch Google Places.
                 </p>
               </div>
-              <div className="clay rounded-2xl p-4 bg-blue-50/85 dark:bg-blue-500/10 border border-blue-200/70 dark:border-blue-500/20 transition-colors duration-700">
-                <div className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-blue-700 dark:text-blue-400 mb-2">
-                  Engine
+              <div className="clay rounded-2xl p-4 bg-gradient-to-br from-blue-50 to-cyan-100/80 dark:from-blue-500/15 dark:to-cyan-500/10 border border-blue-200/70 dark:border-blue-500/25 transition-colors duration-700">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="clay flex items-center justify-center w-6 h-6 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 text-white text-[12px] shrink-0">⚙️</span>
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-blue-700 dark:text-blue-400">Engine</span>
                 </div>
                 <p className="text-[12px] leading-relaxed text-neutral-700 dark:text-neutral-300 transition-colors duration-700">
                   Wide radius + rank-by-distance fetch, deduped and rating-sorted before extract.
                 </p>
               </div>
-              <div className="clay rounded-2xl p-4 bg-violet-50/85 dark:bg-violet-500/10 border border-violet-200/70 dark:border-violet-500/20 transition-colors duration-700">
-                <div className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-violet-700 dark:text-violet-400 mb-2">
-                  Output
+              <div className="clay rounded-2xl p-4 bg-gradient-to-br from-violet-50 to-fuchsia-100/80 dark:from-violet-500/15 dark:to-fuchsia-500/10 border border-violet-200/70 dark:border-violet-500/25 transition-colors duration-700">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="clay flex items-center justify-center w-6 h-6 rounded-lg bg-gradient-to-br from-violet-400 to-fuchsia-500 text-white text-[12px] shrink-0">🎯</span>
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-violet-700 dark:text-violet-400">Output</span>
                 </div>
                 <p className="text-[12px] leading-relaxed text-neutral-700 dark:text-neutral-300 transition-colors duration-700">
                   One primary target + categorized alternates, with smart reroll and live map handoff.
@@ -357,7 +362,8 @@ export default function RationTelemetryPage() {
                   
                   {/* LEFT COLUMN: Metrics & Overrides (Matches Keyword Panels) */}
                   <div className="md:col-span-1 space-y-4">
-                    <div className="clay p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl transition-colors">
+                    <div className="clay relative overflow-hidden p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl transition-colors">
+                      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-500"></div>
                       <h4 className="font-bold text-[13px] text-neutral-600 dark:text-emerald-400 mb-4 flex justify-between tracking-tight transition-colors">
                         Matrix Matches <span className="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded text-[11px] font-black">{allResults.length}</span>
                       </h4>
@@ -368,7 +374,8 @@ export default function RationTelemetryPage() {
                       ) : <p className="text-[12px] text-neutral-400 dark:text-slate-500 transition-colors">Insufficient data for reroll.</p>}
                     </div>
 
-                    <div className="clay p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl transition-colors">
+                    <div className="clay relative overflow-hidden p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl transition-colors">
+                      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-400 via-cyan-400 to-sky-500"></div>
                       <h4 className="font-bold text-[13px] text-neutral-600 dark:text-blue-400 mb-4 tracking-tight transition-colors">
                         Active Parameters
                       </h4>
@@ -386,8 +393,8 @@ export default function RationTelemetryPage() {
                   </div>
 
                   {/* RIGHT COLUMNS: Viewer & Context (Matches Context Viewer) */}
-                  <div className="clay md:col-span-2 p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl flex flex-col transition-colors">
-                     
+                  <div className="clay relative overflow-hidden md:col-span-2 p-5 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl flex flex-col transition-colors">
+                     <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-500"></div>
                      <h4 className="font-bold text-[13px] text-neutral-600 dark:text-slate-300 mb-4 flex justify-between items-center tracking-tight transition-colors">
                        Target Isolation
                        <span className="text-[9px] bg-neutral-100 dark:bg-black/50 px-2 py-1 rounded border border-black/5 dark:border-white/5 uppercase tracking-widest text-neutral-500 dark:text-slate-500">Telemetry Feed</span>
